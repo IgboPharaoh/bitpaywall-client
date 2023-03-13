@@ -20,15 +20,13 @@ export interface PillProps {
 }
 
 export interface GenericCardProps {
-    pills: Array<string>;
+    categories: Array<string>;
     onClick: () => void;
-    estimatedTime: string;
     title: string;
     description: string;
     author: string;
-    date: string;
-    imageUrl: string;
-    authorImageUrl: string;
+    pubDate: string;
+    thumbnail: string;
 }
 
 export interface Article {
