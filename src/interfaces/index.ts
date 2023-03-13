@@ -14,3 +14,19 @@ export interface CustomButtonProps {
     border: ResponsiveValue<string>;
     color: ResponsiveValue<string>;
 }
+
+export interface PillProps {
+    title: string;
+}
+
+export interface GenericCardProps {
+    pills: Array<string>;
+    onClick: () => void;
+    estimatedTime: string;
+    title: string;
+    description: string;
+    author: string;
+    date: string;
+    imageUrl: string;
+    authorImageUrl: string;
+}
