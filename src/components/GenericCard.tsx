@@ -1,8 +1,13 @@
 import Pill from './Pill';
-import { GenericCardProps } from '../interfaces';
+import { Article } from '../interfaces';
 import { Box, Center, Flex, HStack, Stack, Text, Image } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
-const GenericCard = ({ categories, onClick, title, pubDate, author, thumbnail, description }: GenericCardProps): JSX.Element => {
+const GenericCard = ({ categories, title, pubDate, author, thumbnail, description, guid }: Article): JSX.Element => {
+    const navigate = useNavigate();
+    const linkArr = guid.split('/');
+    const link = linkArr[linkArr.length - 1];
+
     const getInitials = (arg: string) => {
         const args = arg.split(' ');
         if (args.length === 1) {
@@ -14,13 +19,17 @@ const GenericCard = ({ categories, onClick, title, pubDate, author, thumbnail, d
 
     const getEstimatedTime = (arg: string) => {
         const totalWords = arg.split('').join('').length;
-        const totalTime = Math.round(totalWords / 350);  //assuming words read per minute is 350
+        const totalTime = Math.round(totalWords / 350); //assuming words read per minute is 350
         return totalTime;
+    };
+
+    const onClickTitle = () => {
+        navigate(link, { state: { title, description } });
     };
 
     return (
         <>
-            <Box borderBottom='1px solid #afabab' pb='24px' pt='24px' onClick={onClick} cursor='pointer' maxW='720px'>
+            <Box borderBottom='1px solid #afabab' pb='24px' pt='24px' maxW='720px'>
                 <Stack>
                     <Flex alignItems='center' borderRadius='4px' pl='1px' gap='64px' justifyContent='space-between'>
                         <Stack width='495px'>
@@ -35,7 +44,13 @@ const GenericCard = ({ categories, onClick, title, pubDate, author, thumbnail, d
                                 </Text>
                             </Flex>
                             <HStack justifyContent='space-between'>
-                                <Text fontSize='22px' fontWeight='700'>
+                                <Text
+                                    _hover={{ textDecor: 'underline', opacity: '0.75', color: '#2d2d2d' }}
+                                    onClick={onClickTitle}
+                                    cursor='pointer'
+                                    fontSize='22px'
+                                    fontWeight='700'
+                                >
                                     {title}
                                 </Text>
                             </HStack>

@@ -5,11 +5,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ChakraProvider } from '@chakra-ui/react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Article from './Article';
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <App />,
+    },
+    {
+        path: ':id',
+        element: <Article />,
     },
 ]);
 
