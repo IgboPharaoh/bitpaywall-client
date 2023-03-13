@@ -30,3 +30,16 @@ export interface GenericCardProps {
     imageUrl: string;
     authorImageUrl: string;
 }
+
+export interface Article {
+    author: string;
+    categories: string;
+    content: string;
+    description: string;
+    enclosure: object;
+    guid: string;
+    link: string;
+    pubDate: string;
+    thumbnail: string;
+    title: string;
+}
