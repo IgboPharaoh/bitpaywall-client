@@ -31,3 +31,12 @@ export interface Article {
     thumbnail: string;
     title: string;
 }
+
+export interface ModalProps {
+    open: boolean;
+    onCloseClickCallback: () => void;
+    openDrawer: () => void;
+    title: string;
+    description: string;
+    amount: number
+}
