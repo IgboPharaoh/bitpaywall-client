@@ -1,12 +1,15 @@
+import React from 'react';
 import Pill from './Pill';
 import { Article } from '../interfaces';
 import { Box, Center, Flex, HStack, Stack, Text, Image } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import CustomModal from './Modal';
 
 const GenericCard = ({ categories, title, pubDate, author, thumbnail, description, guid }: Article): JSX.Element => {
     const navigate = useNavigate();
     const linkArr = guid.split('/');
     const link = linkArr[linkArr.length - 1];
+    const [showModal, setShowModal] = React.useState(false);
 
     const getInitials = (arg: string) => {
         const args = arg.split(' ');
@@ -17,14 +20,19 @@ const GenericCard = ({ categories, title, pubDate, author, thumbnail, descriptio
         return `${args[0]?.charAt(0) + args[1]?.charAt(0)}`;
     };
 
-    const getEstimatedTime = (arg: string) => {
-        const totalWords = arg.split('').join('').length;
-        const totalTime = Math.round(totalWords / 350); //assuming words read per minute is 350
-        return totalTime;
+    const getEstimatedTime = () => {
+        const totalWords = description.split('').join('').length;
+        return Math.round(totalWords / 350); //assuming words read per minute is 350
+    };
+
+    const estimatedCostPerArticle = () => {
+        const totalWords = description.split('').join('').length;
+        return Math.round(totalWords);
     };
 
     const onClickTitle = () => {
-        navigate(link, { state: { title, description } });
+        setShowModal(true);
+        // navigate(link, { state: { title, description } });
     };
 
     return (
@@ -40,7 +48,7 @@ const GenericCard = ({ categories, title, pubDate, author, thumbnail, descriptio
                                     ))}
                                 </Flex>
                                 <Text fontSize='15px' color='#706e6e'>
-                                    {getEstimatedTime(description)} mins
+                                    {getEstimatedTime()} mins
                                 </Text>
                             </Flex>
                             <HStack justifyContent='space-between'>
@@ -79,6 +87,16 @@ const GenericCard = ({ categories, title, pubDate, author, thumbnail, descriptio
                     </Flex>
                 </Stack>
             </Box>
+            {showModal && (
+                <CustomModal
+                    open={showModal}
+                    onCloseClickCallback={() => setShowModal(false)}
+                    openDrawer={() => {}}
+                    title={title}
+                    description={description}
+                    amount={estimatedCostPerArticle()}
+                />
+            )}
         </>
     );
 };
