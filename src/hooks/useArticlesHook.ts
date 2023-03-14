@@ -13,7 +13,7 @@ export const useArticlesHook = () => {
             const result = await response.json();
             if (result) {
                 setArticles(result.items);
-                console.log(result.items);
+                // console.log(result.items);
             }
         } catch (error) {
             console.error(error);
