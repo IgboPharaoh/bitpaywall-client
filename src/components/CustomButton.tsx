@@ -8,7 +8,7 @@ const CustomButton = ({ children, ...props }: Partial<CustomButtonProps>): JSX.E
                 fontSize={{ base: '12px', md: '13px', lg: '14px' }}
                 p={{ base: '10px', md: '13px', lg: '16px' }}
                 fontWeight='600'
-                backgroundColor='#001247'
+                backgroundColor='#000000'
                 borderRadius='32px'
                 color='white'
                 {...props}
