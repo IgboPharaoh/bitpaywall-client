@@ -6,6 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import { ChakraProvider } from '@chakra-ui/react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Article from './Article';
+import AuthPage from './AuthPage';
+import { AuthContextProvider } from './contexts/AuthContext';
 
 const router = createBrowserRouter([
     {
@@ -16,13 +18,19 @@ const router = createBrowserRouter([
         path: ':id',
         element: <Article />,
     },
+    {
+        path: '/auth',
+        element: <AuthPage />,
+    },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
     <React.StrictMode>
         <ChakraProvider>
-            <RouterProvider router={router} />
+            <AuthContextProvider>
+                <RouterProvider router={router} />
+            </AuthContextProvider>
         </ChakraProvider>
     </React.StrictMode>
 );

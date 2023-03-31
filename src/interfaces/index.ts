@@ -38,5 +38,38 @@ export interface ModalProps {
     openDrawer: () => void;
     title: string;
     description: string;
-    amount: number
+    amount: number;
+}
+
+export interface HeaderProps {
+    bottomText?: string;
+}
+
+export type AxiosErrorObj = {
+    error: string;
+    msg: string;
+    data: any;
+};
+
+export interface Article {
+    articleId: number;
+    hasPaid: boolean;
+    amount: number;
+    userPubKey: string;
+}
+
+export interface CreateInvoiceObj {
+    article: Article;
+    payReq: string;
+}
+
+export interface LightningData {
+    url: string;
+    secret: string;
+    encoded: string;
+}
+
+export interface LnAuthContext {
+    handleLightningLogin: () => void;
+    lightningData: LightningData;
 }
