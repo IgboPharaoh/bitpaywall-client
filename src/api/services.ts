@@ -1,8 +1,12 @@
 import axios, { AxiosError } from 'axios';
-import { AxiosErrorObj, CreateInvoiceObj } from '../interfaces';
-import axiosInstance from './axios';
+import { ArticleInvoice, AxiosErrorObj, CreateInvoiceObj } from '../interfaces';
 
-axios.defaults.baseURL = process.env.API_PATH;
+const Axios = axios.create({
+    baseURL: 'http://localhost:3001/api',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
 
 // login with lnurl
 export const loginWithLnUrl = async (): Promise<any> => {
@@ -20,33 +24,29 @@ export const loginWithLnUrl = async (): Promise<any> => {
 };
 
 // create invoice to pay article
-export const genInvoiceApi = async (
-    articleId: number,
-    hasPaid: boolean,
-    amount: number,
-    userPubKey: string
-): Promise<CreateInvoiceObj | undefined> => {
-    const params = { articleId, hasPaid, amount, userPubKey };
+export const genInvoiceApi = async (articleId: string, hasPaid: boolean, amount: number, userPubKey: string): Promise<CreateInvoiceObj> => {
+    const body = { hasPaid, amount, userPubKey };
+
     try {
-        const response: CreateInvoiceObj = await axiosInstance.get(`/pay-invoice/${articleId}`, { params });
-        return response;
+        const { data } = await Axios.post(`/pay-invoice/${articleId}`, body);
+        return data.data;
     } catch (error) {
         console.log(error);
+        throw new Error(`Oops cannot create an invocie for article no ${articleId}`);
     }
 };
 
+export const getInvoicePaymentStatus = () => {};
+
 // get all user paid invoice
-export const getUserPaidArticlesApi = async (
-    articleId: number,
-    hasPaid: boolean,
-    amount: number,
-    userPubKey: string
-): Promise<CreateInvoiceObj | undefined> => {
-    const params = { articleId, hasPaid, amount, userPubKey };
+export type ArticleArray = Omit<ArticleInvoice, 'paymentRequest' | 'isPaying'>;
+
+export const getUserPaidArticlesApi = async (userPubKey: string): Promise<ArticleArray[]> => {
     try {
-        const response: CreateInvoiceObj = await axiosInstance.get(`/pay-invoice/${articleId}`, { params });
-        return response;
+        const response: { data: ArticleArray[] } = await axios.get(`/paid-articles/${userPubKey}'`);
+        return Promise.resolve(response?.data);
     } catch (error) {
         console.log(error);
+        throw new Error(`Error getting all articles for user ${userPubKey}`);
     }
 };
