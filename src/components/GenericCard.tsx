@@ -2,13 +2,9 @@ import React from 'react';
 import Pill from './Pill';
 import { Article } from '../interfaces';
 import { Box, Center, Flex, HStack, Stack, Text, Image } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
 import CustomModal from './Modal';
 
 const GenericCard = ({ categories, title, pubDate, author, thumbnail, description, guid }: Article): JSX.Element => {
-    const navigate = useNavigate();
-    const linkArr = guid.split('/');
-    const link = linkArr[linkArr.length - 1];
     const [showModal, setShowModal] = React.useState(false);
 
     const getInitials = (arg: string) => {
@@ -30,11 +26,6 @@ const GenericCard = ({ categories, title, pubDate, author, thumbnail, descriptio
         return Math.round(totalWords);
     };
 
-    const onClickTitle = () => {
-        setShowModal(true);
-        // navigate(link, { state: { title, description } });
-    };
-
     return (
         <>
             <Box borderBottom='1px solid #afabab' pb='24px' pt='24px' maxW='720px'>
@@ -54,7 +45,7 @@ const GenericCard = ({ categories, title, pubDate, author, thumbnail, descriptio
                             <HStack justifyContent='space-between'>
                                 <Text
                                     _hover={{ textDecor: 'underline', opacity: '0.75', color: '#2d2d2d' }}
-                                    onClick={onClickTitle}
+                                    onClick={() => setShowModal(true)}
                                     cursor='pointer'
                                     fontSize='22px'
                                     fontWeight='700'
@@ -95,6 +86,7 @@ const GenericCard = ({ categories, title, pubDate, author, thumbnail, descriptio
                     title={title}
                     description={description}
                     amount={estimatedCostPerArticle()}
+                    guid={guid}
                 />
             )}
         </>
