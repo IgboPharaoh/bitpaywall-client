@@ -39,6 +39,7 @@ export interface ModalProps {
     title: string;
     description: string;
     amount: number;
+    guid: string;
 }
 
 export interface HeaderProps {
@@ -51,16 +52,19 @@ export type AxiosErrorObj = {
     data: any;
 };
 
-export interface Article {
-    articleId: number;
+export interface ArticleInvoice {
+    paymentRequest: string;
     hasPaid: boolean;
+    articleId: string;
     amount: number;
     userPubKey: string;
+    isPaying: boolean;
 }
 
 export interface CreateInvoiceObj {
-    article: Article;
+    article: { articleId: string; hasPaid: boolean };
     payReq: string;
+    userPubKey: string;
 }
 
 export interface LightningData {
