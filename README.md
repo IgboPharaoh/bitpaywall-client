@@ -33,4 +33,4 @@ If your application is appropriately connected, you'll be directed to the home p
 
 <img width="1680" alt="Screenshot 2023-05-30 at 11 10 29" src="https://github.com/IgboPharaoh/bitpaywall-client/assets/87058633/9097ed53-680d-440c-88ab-66a5439f229e">
 
-![Screenshot 2023-05-30 at 13 48 38 (2)](https://github.com/IgboPharaoh/bitpaywall-client/assets/87058633/ee1fb4c1-356a-43c5-8699-e9fe14bbde0f)
+<img width="1298" alt="Screenshot 2023-05-30 at 16 55 37" src="https://github.com/IgboPharaoh/bitpaywall-client/assets/87058633/0c31bed9-9456-4477-8465-7c2cb921d7b4">
