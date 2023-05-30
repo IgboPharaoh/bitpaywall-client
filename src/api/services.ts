@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import { ArticleInvoice, AxiosErrorObj, CreateInvoiceObj } from '../interfaces';
 
-const Axios = axios.create({
+export const Axios = axios.create({
     baseURL: 'http://localhost:3001/api',
     headers: {
         'Content-Type': 'application/json',
