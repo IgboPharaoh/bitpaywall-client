@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import { ModalOverlay, Modal, ModalContent } from '@chakra-ui/react';
 import { ArticleInvoice, ModalProps } from '../interfaces';
 
-import { genInvoiceApi } from '../api/services';
+import { Axios, genInvoiceApi } from '../api/services';
 import PaymentChecker from './PaymentChecker';
 import PaymentSummary from './PaymentSummary';
 import PaymentInvoice from './PaymentInvoice';
 import { useNavigate } from 'react-router-dom';
+import { io } from 'socket.io-client';
 
 const CustomModal = ({ open, onCloseClickCallback, title, description, amount, guid }: ModalProps): JSX.Element => {
     const linkArr = guid.split('/');
@@ -25,25 +26,34 @@ const CustomModal = ({ open, onCloseClickCallback, title, description, amount, g
         isPaying: false,
     });
 
-    if (isConfirming === true) {
-        const interval = setInterval(async () => {
-            console.log('checking invoice state');
-            setIsConfirming(true);
+    useEffect(() => {
+        const socket = io(process.env.API_PATH || process.env.SOCKET_API_PATH || '');
 
-            const invoiceStatus = await fetch('/');
-        }, 5000);
+        socket.on('connect', () => {
+            console.log('connceted to the server');
+        });
 
-        clearInterval(interval);
-    }
+        socket.on('payment-confirmed', (data) => {
+            if (data.paymentRequest === articleState.paymentRequest) {
+                setArticleState({ ...articleState, hasPaid: true });
+                setIsConfirming(false);
+            }
+        });
+
+        return () => {
+            socket.disconnect();
+        };
+    }, [articleState.paymentRequest, articleState.hasPaid, articleState]);
+
+    const checkPaidInvoices = () => setStep(2);
 
     const { paymentRequest } = articleState;
+
     const generateArticleInvoice = async () => {
         try {
             const res = await genInvoiceApi(articleId, articleState.hasPaid, amount, userPubKey);
 
             setArticleState((articleState) => ({ ...articleState, isPaying: false, paymentRequest: res.payReq, hasPaid: res?.article?.hasPaid }));
-
-            console.log({ articleState }, 'article state 2');
 
             if (res.payReq.length) {
                 setStep(step + 1);
@@ -68,7 +78,7 @@ const CustomModal = ({ open, onCloseClickCallback, title, description, amount, g
                         <>
                             <PaymentInvoice
                                 back={() => setStep(0)}
-                                confirmPayment={() => setStep(2)}
+                                confirmPayment={checkPaidInvoices}
                                 paymentRequest={paymentRequest}
                                 amount={amount}
                             />
